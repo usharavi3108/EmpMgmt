@@ -72,8 +72,8 @@ class EmpCreation extends React.Component {
       empgen1: '',
       isLoaded: '',
       message: ''
-    })
-  }
+        })
+       }
 
 
   render() {

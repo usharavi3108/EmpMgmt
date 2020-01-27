@@ -32,11 +32,12 @@ class EmpUpdate extends React.Component {
     const { id } = this.state;
        axios.get('http://localhost:5000/selemp/' + id)
       .then(res => {
-
-        if (res.data.length > 0) {
-
+      
+        if (res.data.length > 0) 
+            {
+            
           const employees = res.data;
-
+          console.log("Inside update",res.data);
           this.setState({ employees, isLoaded: true })
           this.setState({
             id: this.state.employees[0].empno,
@@ -47,7 +48,9 @@ class EmpUpdate extends React.Component {
             empgen: this.state.employees[0].empgen
 
           })
-        } else {
+        }
+              
+        else {
           const message = "NO records found"
           this.setState({
             message: message
@@ -62,7 +65,7 @@ class EmpUpdate extends React.Component {
   ClickUpdate = (event) => {
     event.preventDefault();
 
-
+     
     var empId = this.state.id;
     var Fname1 = this.state.empfname;
     var surnam1 = this.state.empsurnam;
@@ -70,27 +73,28 @@ class EmpUpdate extends React.Component {
     var DOB1 = this.state.empdob;
     var gender1 = this.state.empgen;
 
-
-    axios.put('http://localhost:5000/updemp/' + empId, { empId, Fname1, surnam1, email1, DOB1, gender1 })
+    const { id } = this.state;
+    
+          
+      axios.put('http://localhost:5000/updemp/' + empId, { empId, Fname1, surnam1, email1, DOB1, gender1 })
+      
       .then((response) => {
-
-        console.log("chking success status", response.data);
+          console.log("chking success status", response.data);
         const message = response.data.message;
         this.setState({
           message: message
         })
-
       }
-
-      )
-
-  }
-  handleGenChange = (event) => {
+    
+        )
+    }     
+  
+    handleGenChange = (event) => {
     this.setState({
       empgen: event.target.value
     });
   }
-
+  
   clickReset() {
     this.setState({
       id: '',
@@ -176,4 +180,5 @@ class EmpUpdate extends React.Component {
   }
 }
 export default EmpUpdate;
+
 

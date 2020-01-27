@@ -31,7 +31,7 @@ router.get('/selempall', (req, res, next) => {
 // Post employee
 
 router.post('/empost', bodyParser.json(), (req, res, next) => {
-  if (req.body !== {}) {
+  if (req.body !==  {}){
 
 
     var empId = parseInt(req.body.empId);
@@ -94,21 +94,17 @@ router.get('/selemp/:id', function (req, res) {
     } else {
       console.log("Query succeeded.");
       res.send(data.Items)
-      
-
-    }
-  });
+      }
+     
+});
 });
 
 //update
-
 router.put('/updemp/:id', function (req, res) {
-
-  var empId = parseInt(req.params.id);
+      var empId = parseInt(req.params.id, 10);
+console.log("test",empId);
   var Fname = req.body.Fname1;
-
   var surnam = req.body.surnam1;
-
   var email = req.body.email1;
   var DOB = req.body.DOB1;
   var Gender = req.body.gender1;
@@ -118,41 +114,42 @@ router.put('/updemp/:id', function (req, res) {
     Key: {
       empno: empId,
     },
-
-    UpdateExpression: "set empfname=:Fname1,empsurnam=:surnam1,empemail=:email1,empdob=:DOB1,empgen=:gender1",
-
-    ExpressionAttributeValues: {
+             UpdateExpression: "set empfname=:Fname1,empsurnam=:surnam1,empemail=:email1,empdob=:DOB1,empgen=:gender1",
+             ConditionExpression : 'attribute_exists(empno)',
+        ExpressionAttributeValues: {
       ":Fname1": Fname,
       ":surnam1": surnam,
       ":email1": email,
       ":DOB1": DOB,
       ":gender1": Gender
     },
+    
     ReturnValues: "UPDATED_NEW"
   };
-  console.log("Update", params);
-
-  docClient.update(params, function (err, data) {
-
-    if (err) {
-      console.error("Unable to update item. Error JSON:", empId, ". Error JSON:", JSON.stringify(err, null, 2));
-
-      res.send({
-        success: false,
-        message: 'Error: Server error'
-
-      });
-    }
-    else {
-      console.log('data', data);
-      res.send({
-        success: true,
-        message: 'Employee Details Updated',
-        empno: empId
-      });
-    }
-  });
+      console.log("param val",params);
+        docClient.update(params, function (err, data) {
+     
+        if (err) {
+        console.error("Unable to update item. Error JSON:", empId, ". Error JSON:", JSON.stringify(err, null, 2));
+  
+        res.send({
+          success: false,
+          message: 'Error: Employee id does not exist.Enter a valid Id'
+  
+        });
+      }
+      else {
+        console.log('data', data);
+        res.send({
+          success: true,
+          message: 'Employee Details Updated',
+          empno: empId
+        });
+      }
+    });
+  
 });
+
 
 // Get employee for deletion
 router.delete('/delemp/:id', function (req, res) {
